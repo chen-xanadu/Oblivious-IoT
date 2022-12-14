@@ -1,12 +1,16 @@
 package main
 
 import (
-	"Oblivious-IoT/config"
+	"crypto/hmac"
 	"crypto/rand"
 	"crypto/rsa"
+	"crypto/sha256"
 	"crypto/x509"
+	"encoding/binary"
 	"encoding/pem"
+	"fmt"
 	"os"
+	"time"
 )
 
 func initKeyPair(pkFilename, skFilename string) {
@@ -46,7 +50,25 @@ func initKeyPair(pkFilename, skFilename string) {
 }
 
 func main() {
-	initKeyPair(config.DevicePkFile, config.DeviceSkFile)
-	initKeyPair(config.VendorPkFile, config.VendorSkFile)
-	initKeyPair(config.IntegratorPkFile, config.IntegratorSkFile)
+	//initKeyPair(config.DevicePkFile, config.DeviceSkFile)
+	//initKeyPair(config.VendorPkFile, config.VendorSkFile)
+	//initKeyPair(config.IntegratorPkFile, config.IntegratorSkFile)
+
+	start := time.Now()
+
+	for i := 0; i < 1000; i++ {
+		prf := hmac.New(sha256.New, []byte("device1"))
+		for j := 0; j < 10; j++ {
+			data := binary.LittleEndian.AppendUint32(nil, uint32(j))
+			data = binary.LittleEndian.AppendUint32(data, uint32(1))
+
+			prf.Write(data)
+			prf.Sum(nil)
+			prf.Reset()
+		}
+	}
+
+	duration := time.Since(start)
+	fmt.Println(duration)
+
 }
