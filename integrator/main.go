@@ -27,7 +27,7 @@ func outsourceShuffle(client pb.ShuffleServerClient) {
 	sk := helper.ReadSk(config.IntegratorSkFile)
 	var database [config.NumCommands]*user.UserMessage
 
-	ctx, cancel := context.WithTimeout(context.Background(), 10*time.Second)
+	ctx, cancel := context.WithTimeout(context.Background(), 1000*time.Second)
 	defer cancel()
 
 	stream, err := client.Shuffle(ctx)
