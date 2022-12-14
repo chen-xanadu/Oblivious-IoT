@@ -81,6 +81,7 @@ func outsourceShuffle(client pb.ShuffleServerClient) {
 	<-waitc
 	wg.Wait()
 
+	fmt.Println(time.Now().UnixMilli())
 	duration := time.Since(start)
 	fmt.Println(duration)
 

@@ -10,6 +10,7 @@ import (
 	"math/rand"
 	"net"
 	"sync"
+	"time"
 )
 
 type shuffleServer struct {
@@ -46,6 +47,7 @@ func (s *shuffleServer) Shuffle(stream pb.ShuffleServer_ShuffleServer) error {
 	}
 
 	wg.Wait()
+	fmt.Println(time.Now().UnixMilli())
 
 	for _, j := range perm {
 		//fmt.Println(i, j)

@@ -16,3 +16,15 @@ service ShuffleServer {
   rpc Shuffle(stream ShuffleRequest) returns (stream ShuffleResponse) {}
 }
 
+
+message QueryRequest {
+  bytes data = 1;
+}
+
+message QueryResponse {
+  bytes data = 1;
+}
+
+service QueryServer {
+  rpc Query(stream QueryRequest) returns (stream ShuffleResponse) {}
+}

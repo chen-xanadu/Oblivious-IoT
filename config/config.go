@@ -20,6 +20,6 @@ const (
 
 const (
 	NumDevices           = 10
-	NumCommands          = 100000
+	NumCommands          = 1000
 	MaxCommandsPerDevice = 10
 )
