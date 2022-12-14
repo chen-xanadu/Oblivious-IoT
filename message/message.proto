@@ -1,0 +1,18 @@
+syntax = "proto3";
+
+option go_package = "Oblivious-IoT/message";
+
+message ShuffleRequest {
+  bytes data = 1;
+}
+
+
+message ShuffleResponse {
+  bytes data = 1;
+}
+
+
+service ShuffleServer {
+  rpc Shuffle(stream ShuffleRequest) returns (stream ShuffleResponse) {}
+}
+
