@@ -9,6 +9,7 @@ import (
 	"io"
 	"math/rand"
 	"net"
+	"sync"
 )
 
 type shuffleServer struct {
@@ -18,6 +19,7 @@ type shuffleServer struct {
 func (s *shuffleServer) Shuffle(stream pb.ShuffleServer_ShuffleServer) error {
 	i := 0
 	var responses [config.NumCommands][]byte
+	var wg sync.WaitGroup
 
 	sk := helper.ReadSk(config.VendorSkFile)
 
@@ -32,11 +34,18 @@ func (s *shuffleServer) Shuffle(stream pb.ShuffleServer_ShuffleServer) error {
 			return err
 		}
 
-		responses[i] = helper.HybridDecrypt(request.Data, sk)
+		wg.Add(1)
+		go func(i int, data []byte) {
+			defer wg.Done()
+			responses[i] = helper.HybridDecrypt(request.Data, sk)
+		}(i, request.Data)
+
 		i += 1
 
 		//fmt.Println(request.Data);
 	}
+
+	wg.Wait()
 
 	for _, j := range perm {
 		//fmt.Println(i, j)
